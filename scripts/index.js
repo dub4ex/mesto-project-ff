@@ -8,6 +8,7 @@
 
 // @todo: Вывести карточки на страницу
 
+
 function createCard(cardInfo, deleteEvent) {                              //Функция создания карточки (Принимает в себя элемент массива и функцию удаления карточки)
   const cardTemplate = document.querySelector('#card-template').content;  //Наодим темплейт карточки и берем из него фрагмент документа и присваиваем переменную
   const card = cardTemplate.querySelector('.card').cloneNode(true);       //Присваиваем li(карточке) переменную и клонируем её
