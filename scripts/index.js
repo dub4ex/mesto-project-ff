@@ -8,25 +8,22 @@
 
 // @todo: Вывести карточки на страницу
 
-
-
-
-
-
-
-const cardList = document.querySelector('.places__list');                   //Вызываем из html ul с пока пустым списком карточек
-const cardTemplate = document.querySelector('#card-template').content;      //Вызываем из html темплейт карточки
-initialCards.forEach(function (item) {                                      /*Заполнение карточек информацией и вывод на страницу аппендом*/
-  const cardElement = cardTemplate.cloneNode(true);                         //Клонируем темплейт
-  cardElement.querySelector('.card__title').textContent = item.name;        //Каждой карточке даём название
-  cardElement.querySelector('.card__image').alt = item.name;                //Каждой карточке указываем альт
-  cardElement.querySelector('.card__image').src = item.link;                //Каждой карточке даём ссылку на картинку
-  cardList.append(cardElement);                                             //Выводим карточку на страницу
-});
-cardList.addEventListener('click', function(event) {                        /*Ставим слушатель на клик в списке карточек */
-  const deleteButton = event.target.closest('.card__delete-button');        //Находим кнопку на странице
-  if (!deleteButton) {                                                      /* Если клик не по кнопке то ничего не происходит, убирает ошибку Cannot read properties of null (reading 'parentElement') */
-    return;
-  }
-  deleteButton.parentElement.remove();                                      /* Клик по кнопке- убираем родительский элемент */
+function createCard(cardInfo, deleteEvent) {                              //Функция создания карточки (Принимает в себя элемент массива и функцию удаления карточки)
+  const cardTemplate = document.querySelector('#card-template').content;  //Наодим темплейт карточки и берем из него фрагмент документа и присваиваем переменную
+  const card = cardTemplate.querySelector('.card').cloneNode(true);       //Присваиваем li(карточке) переменную и клонируем её
+  const cardTitle = card.querySelector('.card__title');                   //Переменная для заголовка внутри карточки
+  const cardImage = card.querySelector('.card__image');                   //Переменная для изображения внутри карточки
+  const deleteButton = card.querySelector('.card__delete-button');        //Переменная для кнопки удаления внутри карточки
+  cardTitle.textContent = cardInfo.name;                                  //Добавляем текст в заголвок из элемента массива со значением name
+  cardImage.alt = cardInfo.name;                                          //Добавляем альт в изображение из элемента массива со значением name
+  cardImage.src = cardInfo.link;                                          //Добавляем ссылку на изображение из элемента массива со значением link
+  deleteButton.addEventListener('click', deleteEvent);                    //Добавляем на кнопку удаления слушатель
+  return card;                                                            //Возвращаем карточку со всеми нужными элементами
+}
+const cardList = document.querySelector('.places__list');                 //Находим список куда будем вставлять карточки
+initialCards.forEach(function(cardInfo){                                  //Для каждого элемента массива выполняем функцию
+  const card = createCard(cardInfo, function() {                          //Создаём карточку, добавляя ей инфу из массива и функцию удаления
+    card.remove();                                                        //Удаление карточки
+  });
+  cardList.append(card);                                                  //Добавление карточки на страницу
 });
