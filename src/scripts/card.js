@@ -42,11 +42,11 @@ function deleteCard(card, cardInfo){
 }
 
 function likeCard(like, cardInfo, likeDisplay){
-  like.target.classList.toggle('card__like-button_is-active');
-  if (like.target.classList.contains('card__like-button_is-active')) {
+  if (!like.target.classList.contains('card__like-button_is-active')) {
     apiLikeCard(cardInfo)
     .then((data) => {
       likeDisplay.textContent = data.likes.length;
+      like.target.classList.add('card__like-button_is-active');
     })
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
@@ -55,6 +55,7 @@ function likeCard(like, cardInfo, likeDisplay){
     apiDislikeCard(cardInfo)
     .then((data) =>{
       likeDisplay.textContent = data.likes.length;
+      like.target.classList.remove('card__like-button_is-active');
     })
     .catch((err) => {
       console.log(`Ошибка: ${err}`);

@@ -69,11 +69,10 @@ function editFormSubmitHandler(e) {
   e.preventDefault();
   renderLoading(true, e);
 
-  profileTitle.textContent = editNameInput.value;
-  profileDesc.textContent = editJobInput.value;
-
   apiEditUser(editNameInput, editJobInput)
   .then(() => {
+    profileTitle.textContent = editNameInput.value;
+    profileDesc.textContent = editJobInput.value;
     closeModal(editPopup);
   })
   .catch((err) => {
@@ -87,7 +86,7 @@ function editFormSubmitHandler(e) {
 function addFormSubmitHandler(e) {
   e.preventDefault();
   renderLoading(true, e);
-  
+
   const nameInput = e.target.elements['place-name'].value;
   const linkInput = e.target.elements.link.value;
 
@@ -107,8 +106,8 @@ function addFormSubmitHandler(e) {
   });
 }
 
-function renderLoading(isLoading, form) {
-  const button = form.target.elements[form.target.elements.length - 1];
+function renderLoading(isLoading, e) {
+  const button = e.submitter;
   if (isLoading) {
     button.textContent = 'Сохранение...';
   } else {
@@ -119,9 +118,9 @@ function renderLoading(isLoading, form) {
 function editAvatarSubmitHandler(e) {
   e.preventDefault();
   renderLoading(true, e);
-  profileImage.style.backgroundImage = `url('${editAvatarInput.value}')`;
   apiEditAvatar(editAvatarInput.value)
   .then(() => {
+    profileImage.style.backgroundImage = `url('${editAvatarInput.value}')`;
     closeModal(editAvatarPopup);
     clearValidation(editAvatarForm, validationConfig);
   })
